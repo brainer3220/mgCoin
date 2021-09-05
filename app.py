@@ -69,7 +69,7 @@ def register():
             usertable.email = email
             usertable.password = hash.hexdigest()
 
-            id_df = sqlite3.connect("db.sqlite").cursor().execute("SELECT * FROM 'user_table' WHERE userid == 'brainer'").fetchone()
+            id_df = sqlite3.connect("db.sqlite").cursor().execute("SELECT * FROM 'user_table' WHERE userid == userid").fetchone()
             if not id_df:
                 db.session.add(usertable)
                 db.session.commit()
