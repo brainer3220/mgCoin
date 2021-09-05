@@ -12,7 +12,10 @@ app = Flask(__name__)
 
 @app.route("/", methods=['GET', 'POST'])
 def hello():
-    return "mgCoin"
+    if request.method == 'GET':
+        return render_template("index.html")
+    else:
+        return render_template("logined_index.html")
 
 
 @app.route('/mine', methods=['GET'])
