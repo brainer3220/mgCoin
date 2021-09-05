@@ -61,10 +61,13 @@ def register():
         elif password != password_2:
             return "비밀번호가 일치하지 않습니다"
         else:
-            usertable = User(password)  # user_table 클래스
+            hash = hashlib.sha3_512()
+            hash.update(password.encode('utf-8'))
+
+            usertable = User(hash.hexdigest())
             usertable.userid = userid
             usertable.email = email
-            usertable.password = password
+            usertable.password = hash.hexdigest()
 
             id_df = sqlite3.connect("db.sqlite").cursor().execute("SELECT * FROM 'user_table' WHERE userid == 'brainer'").fetchone()
             if not id_df:
