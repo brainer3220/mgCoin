@@ -1,7 +1,7 @@
+import hashlib
 import os
-import pandas as pd
 import sqlite3
-from flask import Flask, jsonify, render_template, request, redirect
+from flask import Flask, jsonify, render_template, request, redirect, make_response, session
 from blockchain import Blockchain
 from user import db, User
 
@@ -12,10 +12,19 @@ app = Flask(__name__)
 
 @app.route("/", methods=['GET', 'POST'])
 def hello():
-    if request.method == 'GET':
+    if request.method == 'GET' or 'username' not in session:
         return render_template("index.html")
     else:
-        return render_template("logined_index.html")
+        userid = request.form.get('userid')
+        password = request.form.get('password')
+
+        if 'username' not in session:
+            resp = make_response(render_template("logined_index.html"))
+            resp.set_cookie('username', str(userid))
+            resp.set_cookie('password', str(password))
+        return resp
+
+        # return render_template("logined_index.html")
 
 
 @app.route('/mine', methods=['GET'])
