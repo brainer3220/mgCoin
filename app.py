@@ -121,4 +121,4 @@ if __name__ == "__main__":
     db.app = app  # Models.py에서 db를 가져와서 db.app에 app을 명시적으로 넣는다
     db.create_all()  # DB생성
 
-    app.run(host='0.0.0.0', port=8000, debug=True)
+    app.run(host='0.0.0.0', port=8000, debug=False)
