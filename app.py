@@ -1,6 +1,7 @@
 import hashlib
 import os
 import sqlite3
+import pandas as pd
 from flask import Flask, jsonify, render_template, request, redirect, make_response, session
 from blockchain import Blockchain
 from user import db, User
@@ -11,20 +12,48 @@ app = Flask(__name__)
 
 
 @app.route("/", methods=['GET', 'POST'])
-def hello():
-    if request.method == 'GET' or 'username' not in session:
+def index():
+    login_df = pd.DataFrame(sqlite3.connect("db.sqlite").cursor().execute("SELECT * FROM 'user_table'").fetchone()).T
+
+    cookie_hash = hashlib.sha3_512()
+    cookie_hash.update(request.cookies.get('password').encode('utf-8'))
+
+    if request.method == 'GET' and 'username' not in session and 'password' not in session:
         return render_template("index.html")
-    else:
+
+    elif request.method == 'GET' and 'username' in session and 'password' in session:
+        if True in (login_df[3] == cookie_hash.hexdigest()) & (login_df[2] == request.cookies.get('username')):
+            return render_template("logined_index.html")
+        else:
+            return render_template("index.html")
+
+    elif request.method == 'POST':
         userid = request.form.get('userid')
         password = request.form.get('password')
 
-        if 'username' not in session:
-            resp = make_response(render_template("logined_index.html"))
-            resp.set_cookie('username', str(userid))
-            resp.set_cookie('password', str(password))
-        return resp
+        hash = hashlib.sha3_512()
+        hash.update(password.encode('utf-8'))
 
-        # return render_template("logined_index.html")
+        print("___________________________________________________________")
+
+        if 'username' not in session or 'password' not in session:
+            if True in login_df[(login_df[3] == cookie_hash.hexdigest()) & (login_df[2] == request.cookies.get('username'))]:
+                print("Login success")
+                resp = make_response(render_template("logined_index.html"))
+                resp.set_cookie('username', str(userid))
+                resp.set_cookie('password', str(password))
+                print("yes cookie")
+                return resp
+            else:
+                print("Login failed")
+                return render_template("login_falied_index.html")
+        elif True in (pd.DataFrame(login_df).T[3].astype('str').unique() == hash.hexdigest()) and True in (
+                pd.DataFrame(login_df).T[2].astype('str').unique() == userid):
+            print("no cookie")
+            return render_template("logined_index.html")
+        else:
+            print("Login failed")
+            return render_template("login_falied_index.html")
 
 
 @app.route('/mine', methods=['GET'])
@@ -69,7 +98,8 @@ def register():
             usertable.email = email
             usertable.password = hash.hexdigest()
 
-            id_df = sqlite3.connect("db.sqlite").cursor().execute("SELECT * FROM 'user_table' WHERE userid == userid").fetchone()
+            id_df = sqlite3.connect("db.sqlite").cursor().execute(
+                "SELECT * FROM 'user_table' WHERE userid == userid").fetchone()
             if not id_df:
                 db.session.add(usertable)
                 db.session.commit()
@@ -87,7 +117,6 @@ if __name__ == "__main__":
     app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True  # 사용자에게 정보 전달완료하면 teadown. 그 때마다 커밋=DB반영
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # 추가 메모리를 사용하므로 꺼둔다
 
-    # db = SQLAlchemy() #SQLAlchemy를 사용해 데이터베이스 저장
     db.init_app(app)  # app설정값 초기화
     db.app = app  # Models.py에서 db를 가져와서 db.app에 app을 명시적으로 넣는다
     db.create_all()  # DB생성
