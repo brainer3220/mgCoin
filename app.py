@@ -37,24 +37,14 @@ def index():
         hash = hashlib.sha3_512()
         hash.update(password.encode('utf-8'))
 
-        print("___________________________________________________________")
-
         if 'username' not in session or 'password' not in session:
             if True in login_df[(login_df[3] == cookie_hash.hexdigest()) & (login_df[2] == request.cookies.get('username'))]:
                 print("Login success")
                 resp = make_response(render_template("logined_index.html"))
                 resp.set_cookie('username', str(userid))
                 resp.set_cookie('password', str(password))
-                print("yes cookie")
                 return resp
-            else:
-                print("Login failed")
-                return render_template("login_falied_index.html")
-        elif True in (pd.DataFrame(login_df).T[3].astype('str').unique() == hash.hexdigest()) and True in (
-                pd.DataFrame(login_df).T[2].astype('str').unique() == userid):
-            print("no cookie")
-            return render_template("logined_index.html")
-        else:
+
             print("Login failed")
             return render_template("login_falied_index.html")
 
