@@ -13,6 +13,7 @@ app = Flask(__name__)
 
 @app.route("/", methods=['GET', 'POST'])
 def index():
+    global cookie_hash
     login_df = pd.DataFrame(sqlite3.connect("db.sqlite").cursor().execute("SELECT * FROM 'user_table'").fetchone()).T
 
     try:
@@ -37,7 +38,7 @@ def index():
         hash = hashlib.sha3_512()
         hash.update(password.encode('utf-8'))
 
-        if 'username' not in session or 'password' not in session:
+        if 'username' in session and 'password' in session:
             if True in login_df[(login_df[3] == cookie_hash.hexdigest()) & (login_df[2] == request.cookies.get('username'))]:
                 print("Login success")
                 resp = make_response(render_template("logined_index.html"))
