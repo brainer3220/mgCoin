@@ -15,8 +15,11 @@ app = Flask(__name__)
 def index():
     login_df = pd.DataFrame(sqlite3.connect("db.sqlite").cursor().execute("SELECT * FROM 'user_table'").fetchone()).T
 
-    cookie_hash = hashlib.sha3_512()
-    cookie_hash.update(request.cookies.get('password').encode('utf-8'))
+    try:
+        cookie_hash = hashlib.sha3_512()
+        cookie_hash.update(request.cookies.get('password').encode('utf-8'))
+    except:
+        pass
 
     if request.method == 'GET' and 'username' not in session and 'password' not in session:
         return render_template("index.html")
