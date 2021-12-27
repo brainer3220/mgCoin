@@ -1,42 +1,80 @@
 <!DOCTYPE html>
 <html lang="ko">
-    <head>
-        <meta charset='utf-8' />
-        <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no' />
-        <link rel="stylesheet" href="../../static/CSS/OneUI-Web/oui.css">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-    </head>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <title>Hello, world!</title>
+    <link href="https://cdn.jsdelivr.net/gh/samsunginternet/OneUI-Web/oui-css/oui.css" rel="stylesheet">
+</head>
 <body>
-    <div class = "container">
-        <div class="row mt-5">
-            <h1>회원가입</h1>
-        </div>
-
+<main class="container">
+    <div class="oui-viewing">
+        <!-- Viewing area -->
+        <h1>회원가입</h1>
+    </div>
+    <div class="oui-interaction">
+        <!-- Interaction area -->
         <div class="col-12">
-            <br><br>
-            <form method="POST" action="">
-                <div class="form-group">
-                    <label for="userid">아이디</label>
-                    <input type="text" class="form-control" id="userid" placeholder="아이디" name="userid"/>
+            <form action="" method="POST">
+                <div class="oui-bubble">
+                    <p class="oui-overlay-bubble-item">회원가입 정보</p>
+                    <ul>
+                        <li class="oui-bubble-item">
+                            <div class="form-group">
+                                <label for="userid">아이디</label>
+                                <br/>
+                                <input class="form-control" id="userid" name="userid" placeholder="아이디" type="text"/>
+                            </div>
+                        </li>
+                        <li class="oui-bubble-item">
+                            <div class="form-group">
+                                <label for="email">이메일</label>
+                                <br/>
+                                <input class="form-control" id="email" name="email" placeholder="이메일" type="email"/>
+                            </div>
+                        </li>
+                        <li class="oui-bubble-item">
+                            <div class="form-group">
+                                <label for="password">비밀번호</label>
+                                <br/>
+                                <input class="form-control" id="password" name="password" placeholder="비밀번호"
+                                       type="password"/>
+                            </div>
+                        </li>
+                        <li class="oui-bubble-item">
+                            <div class="form-group">
+                                <label for="re_password">비밀번호 확인</label>
+                                <br/>
+                                <input class="form-control" id="re_password" name="re_password" placeholder="비밀번호 확인"
+                                       type="password"/>
+                            </div>
+                        </li>
+                        <li class="oui-bubble-item">
+                            <input class="oui-button oui-button--active" type="submit" value="제출">
+                        </li>
+                    </ul>
                 </div>
-                <div class="form-group">
-                    <label for="email">이메일</label>
-                    <input type="email" class="form-control" id="email" placeholder="이메일" name="email"/>
-                </div>
-                <div class="form-group">
-                    <label for="password">비밀번호</label>
-                    <input type="password" class="form-control" id="password" placeholder="비밀번호" name="password"/>
-                </div>
-                <div class="form-group">
-                    <label for="re_password">비밀번호 확인</label>
-                    <input type="password" class="form-control" id="re_password" placeholder="비밀번호 확인" name="re_password"/>
-                </div>
-                <input type="submit" value="제출" class="oui-button oui-button--active">
             </form>
         </div>
-        </div>
+    </div>
+</main>
 </body>
 </html>
+
+<style>
+    input,
+    label {
+        margin: .4rem 0;
+        border-radius: 8px;
+        height: 2.0rem;
+        width: 20rem;
+    }
+
+    body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+    }
+</style>
